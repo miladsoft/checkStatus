@@ -24,6 +24,7 @@
         .header {
             text-align: center;
             margin-bottom: 40px;
+            position: relative;
         }
 
         .container {
@@ -38,6 +39,8 @@
             background: #f8f9fa;
             border-radius: 8px;
             padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .url-input {
@@ -48,6 +51,7 @@
             font-size: 16px;
             margin-bottom: 15px;
             transition: border-color 0.3s;
+            box-sizing: border-box;
         }
 
         .url-input:focus {
@@ -101,6 +105,24 @@
             background: #dee2e6;
         }
 
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            padding: 8px 15px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: #545b62;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -113,6 +135,7 @@
 </head>
 <body>
     <div class="header">
+        <a href="/" class="back-button">← Back</a>
         <h1>API Test Console</h1>
         <p>Test the Website Status Checker API directly from your browser</p>
     </div>
