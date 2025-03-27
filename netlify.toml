@@ -3,6 +3,11 @@
   publish = "."
 
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  from = "/api/status"
+  to = "/.netlify/functions/checkStatus"
+  status = 200
+
+[[redirects]]
+  from = "/api/status/*"
+  to = "/.netlify/functions/checkStatus/:splat"
   status = 200

@@ -21,7 +21,7 @@
 
     <script>
         function updateStatus() {
-            fetch('/.netlify/functions/checkStatus')
+            fetch('/api/status')
                 .then(response => response.json())
                 .then(sites => {
                     const container = document.getElementById('status-container');

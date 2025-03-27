@@ -29,8 +29,8 @@
     <h1>Website Status Checker API</h1>
     
     <h2>API Usage</h2>
-    <p>Endpoint: <code>/.netlify/functions/checkStatus?url=YOUR_URL</code></p>
-    <p>Example: <code>/.netlify/functions/checkStatus?url=https://google.com</code></p>
+    <p>Endpoint: <code>/api/status?url=YOUR_URL</code></p>
+    <p>Example: <code>/api/status?url=https://google.com</code></p>
 
     <div class="test-form">
         <h3>Test the API</h3>
@@ -45,7 +45,7 @@
             const resultDiv = document.getElementById('result');
             
             try {
-                const response = await fetch(`/.netlify/functions/checkStatus?url=${encodeURIComponent(url)}`);
+                const response = await fetch(`/api/status?url=${encodeURIComponent(url)}`);
                 const data = await response.json();
                 resultDiv.textContent = JSON.stringify(data, null, 2);
             } catch (error) {
