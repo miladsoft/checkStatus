@@ -3,54 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Status Checker API</title>
+    <title>Website Status Checker API - Test Console</title>
     <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --border-color: #dee2e6;
+        }
+        
         body {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
         }
-        .test-form {
-            margin: 20px 0;
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .test-console {
+            background: #f8f9fa;
+            border-radius: 8px;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
         }
+
+        .url-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .url-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .test-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .test-button:hover {
+            background: #0056b3;
+        }
+
         #result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #2d2d2d;
+            color: #fff;
+            border-radius: 6px;
+            font-family: monospace;
             white-space: pre-wrap;
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 5px;
+            display: none;
+        }
+
+        .example-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .example-url {
+            background: #e9ecef;
+            padding: 8px 15px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .example-url:hover {
+            background: #dee2e6;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Website Status Checker API</h1>
-    
-    <h2>API Usage</h2>
-    <p>Endpoint: <code>/api/status?url=YOUR_URL</code></p>
-    <p>Example: <code>/api/status?url=https://google.com</code></p>
+    <div class="header">
+        <h1>API Test Console</h1>
+        <p>Test the Website Status Checker API directly from your browser</p>
+    </div>
 
-    <div class="test-form">
-        <h3>Test the API</h3>
-        <input type="url" id="urlInput" placeholder="Enter website URL" style="width: 300px;">
-        <button onclick="checkStatus()">Check Status</button>
-        <div id="result"></div>
+    <div class="container">
+        <div class="test-console">
+            <input type="url" id="urlInput" class="url-input" placeholder="Enter website URL (e.g., https://google.com)">
+            <button onclick="checkStatus()" class="test-button">Check Status</button>
+        </div>
+        <pre id="result"></pre>
+
+        <div class="example-section">
+            <h3>Quick Test Examples</h3>
+            <div class="example-urls">
+                <span class="example-url" onclick="setUrl('https://google.com')">Google</span>
+                <span class="example-url" onclick="setUrl('https://github.com')">GitHub</span>
+                <span class="example-url" onclick="setUrl('https://microsoft.com')">Microsoft</span>
+            </div>
+        </div>
     </div>
 
     <script>
         async function checkStatus() {
             const url = document.getElementById('urlInput').value;
             const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
             
             try {
+                resultDiv.textContent = 'Loading...';
                 const response = await fetch(`/api/status?url=${encodeURIComponent(url)}`);
                 const data = await response.json();
                 resultDiv.textContent = JSON.stringify(data, null, 2);
             } catch (error) {
                 resultDiv.textContent = 'Error: ' + error.message;
             }
+        }
+
+        function setUrl(url) {
+            document.getElementById('urlInput').value = url;
+            checkStatus();
         }
     </script>
 </body>

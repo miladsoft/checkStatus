@@ -5,46 +5,155 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Status Monitor</title>
     <style>
-        .status-card {
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .search-box {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .search-box input {
+            padding: 10px;
+            width: 60%;
             border: 1px solid #ddd;
-            margin: 10px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .search-box button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search-result {
+            margin-top: 20px;
             padding: 15px;
             border-radius: 5px;
+            display: none;
         }
-        .online { background-color: #d4edda; }
-        .offline { background-color: #f8d7da; }
+        .status-card {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .online { 
+            background-color: #d4edda; 
+            border-left: 5px solid #28a745;
+        }
+        .offline { 
+            background-color: #f8d7da; 
+            border-left: 5px solid #dc3545;
+        }
+        .rtl { direction: rtl; text-align: right; }
+        .ltr { direction: ltr; text-align: left; }
+        .api-docs {
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .doc-section {
+            margin-bottom: 30px;
+        }
+        .code-block {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+            overflow-x: auto;
+        }
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .api-table th, .api-table td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+        }
+        .api-table th {
+            background: #f8f9fa;
+        }
+        .api-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .api-link:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <h1>Website Status Monitor</h1>
-    <div id="status-container"></div>
+    <div class="container">
+        <h1 style="text-align: center">Website Status Monitor</h1>
+        
+        <div class="ltr">
+            <h2>🌟 Service Introduction</h2>
+            <p>This service allows you to check the online status of any website. Using this tool you can:</p>
+            <ul>
+                <li>Check website availability</li>
+                <li>Monitor response time</li>
+                <li>View detailed status information</li>
+            </ul>
+        </div>
 
-    <script>
-        function updateStatus() {
-            fetch('/api/status')
-                .then(response => response.json())
-                .then(sites => {
-                    const container = document.getElementById('status-container');
-                    container.innerHTML = '';
-                    
-                    sites.forEach(site => {
-                        const card = document.createElement('div');
-                        card.className = `status-card ${site.isUp ? 'online' : 'offline'}`;
-                        card.innerHTML = `
-                            <h2>${site.name}</h2>
-                            <p>Status: ${site.isUp ? 'Online' : 'Offline'}</p>
-                            <p>Response Time: ${site.responseTime}ms</p>
-                            <p>Last Checked: ${new Date(site.lastChecked).toLocaleString()}</p>
-                        `;
-                        container.appendChild(card);
-                    });
-                })
-                .catch(error => console.error('Error:', error));
-        }
+        <div class="api-docs">
+            <h2>📚 API Documentation</h2>
+            <div class="doc-section">
+                <h3>Basic Usage</h3>
+                <pre class="code-block">GET /api/status?url=YOUR_URL</pre>
+                <p>Returns the status of a single website including response time and availability.</p>
+            </div>
 
-        // Update status every 1 minute
-        updateStatus();
-        setInterval(updateStatus, 60000);
-    </script>
+            <div class="doc-section">
+                <h3>Example Response</h3>
+                <pre class="code-block">{
+  "url": "https://example.com",
+  "status": 200,
+  "responseTime": 123,
+  "isUp": true,
+  "lastChecked": "2023-09-20T12:00:00Z"
+}</pre>
+            </div>
+
+            <div class="doc-section">
+                <h3>Response Fields</h3>
+                <table class="api-table">
+                    <tr><th>Field</th><th>Description</th></tr>
+                    <tr><td>url</td><td>The URL that was checked</td></tr>
+                    <tr><td>status</td><td>HTTP status code (200 = OK)</td></tr>
+                    <tr><td>responseTime</td><td>Response time in milliseconds</td></tr>
+                    <tr><td>isUp</td><td>Boolean indicating if the site is up</td></tr>
+                    <tr><td>lastChecked</td><td>Timestamp of the last check</td></tr>
+                </table>
+            </div>
+
+            <div class="doc-section">
+                <h3>Try it out!</h3>
+                <p>Visit our <a href="/api.html" class="api-link">API Testing Page</a> to try the API directly.</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
