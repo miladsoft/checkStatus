@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Status Monitor</title>
+    <style>
+        .status-card {
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .online { background-color: #d4edda; }
+        .offline { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <h1>Website Status Monitor</h1>
+    <div id="status-container"></div>
+
+    <script>
+        function updateStatus() {
+            fetch('/.netlify/functions/checkStatus')
+                .then(response => response.json())
+                .then(sites => {
+                    const container = document.getElementById('status-container');
+                    container.innerHTML = '';
+                    
+                    sites.forEach(site => {
+                        const card = document.createElement('div');
+                        card.className = `status-card ${site.isUp ? 'online' : 'offline'}`;
+                        card.innerHTML = `
+                            <h2>${site.name}</h2>
+                            <p>Status: ${site.isUp ? 'Online' : 'Offline'}</p>
+                            <p>Response Time: ${site.responseTime}ms</p>
+                            <p>Last Checked: ${new Date(site.lastChecked).toLocaleString()}</p>
+                        `;
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Update status every 1 minute
+        updateStatus();
+        setInterval(updateStatus, 60000);
+    </script>
+</body>
+</html>
